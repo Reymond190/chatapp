@@ -14,7 +14,8 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-        print(self)
+        print('connected to room')
+        print(self.room_group_name)
 
         self.accept()
 
@@ -25,6 +26,7 @@ class ChatConsumer(WebsocketConsumer):
             self.channel_name
         )
         print(close_code)
+        print('disconnected')
 
     def receive(self, text_data):
         print(text_data)
@@ -39,6 +41,7 @@ class ChatConsumer(WebsocketConsumer):
                 'message': message
             }
         )
+        print('received')
 
     def chat_message(self, event):
         message = event['message']
@@ -47,4 +50,7 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'message': message
         }))
+
+        print('chat_message function called')
+        print('event'+str(event))
 
