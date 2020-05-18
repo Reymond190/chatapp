@@ -1,7 +1,13 @@
 # chat/consumers.py
 import json
+
+import channels.layers
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .models import plan
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -45,7 +51,9 @@ class ChatConsumer(WebsocketConsumer):
         )
         print('received')
 
-    def chat_messagere(self, event):
+
+    def chat_message(self, event):
+
         message = event['message']
 
         # Send message to WebSocket
@@ -53,7 +61,24 @@ class ChatConsumer(WebsocketConsumer):
             'message': message
         }))
 
-
         print('chat_message function called')
         print('event'+str(event))
+
+    @receiver(post_save, sender=plan, dispatch_uid="only_plan_stuff")
+    def update_stock(self, sender, instance, **kwargs):
+        message = {
+            'job_id': instance.plan_name,
+            'title': instance.plan_id,
+            'status': instance.users,
+            'modified': instance.devices,
+        }
+
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'text': message
+            }
+        )
+
 
