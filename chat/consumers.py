@@ -15,7 +15,9 @@ class ChatConsumer(WebsocketConsumer):
             self.channel_name
         )
         print('connected to room')
-        print(self.room_group_name)
+        print(self.channel_layer)
+        print(self.channel_name)
+        print(self.channel_layer.group_add)
 
         self.accept()
 
