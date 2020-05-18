@@ -14,6 +14,7 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+        print(self)
 
         self.accept()
 
@@ -23,8 +24,10 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+        print(close_code)
 
     def receive(self, text_data):
+        print(text_data)
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
 
