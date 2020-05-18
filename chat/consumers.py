@@ -45,13 +45,14 @@ class ChatConsumer(WebsocketConsumer):
         )
         print('received')
 
-    def chat_message(self, event):
+    def chat_messagere(self, event):
         message = event['message']
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
             'message': message
         }))
+
 
         print('chat_message function called')
         print('event'+str(event))
