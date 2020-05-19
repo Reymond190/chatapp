@@ -84,7 +84,7 @@ class ChatConsumer(WebsocketConsumer):
             group_name,
             {
                 'type': 'chat_message',
-                'message': str(type(message))
+                'message': message
             }
         )
 
