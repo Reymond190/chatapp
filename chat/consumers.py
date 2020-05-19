@@ -68,6 +68,8 @@ class ChatConsumer(WebsocketConsumer):
 
     @receiver(post_save, sender=plan, dispatch_uid="only_plan_stuff")
     def update_stock(sender, instance, **kwargs):
+        user = instance.owner
+        group_name = 'chat_%s' % user.username
         message = {
             'job_id': instance.plan_name,
             'title': instance.plan_id,
@@ -79,7 +81,7 @@ class ChatConsumer(WebsocketConsumer):
         channel_layer = channels.layers.get_channel_layer()
 
         async_to_sync(channel_layer.group_send)(
-            room_group_name,
+            group_name,
             {
                 'type': 'chat_message',
                 'text': message
