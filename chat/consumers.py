@@ -12,8 +12,10 @@ from .models import plan
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
+
+        user = self.scope["user"]
         self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
+        self.room_group_name = 'chat_%s' % user.username
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -65,16 +67,19 @@ class ChatConsumer(WebsocketConsumer):
         print('event'+str(event))
 
     @receiver(post_save, sender=plan, dispatch_uid="only_plan_stuff")
-    def update_stock(self, sender, instance, **kwargs):
+    def update_stock(sender, instance, **kwargs):
         message = {
             'job_id': instance.plan_name,
             'title': instance.plan_id,
             'status': instance.users,
             'modified': instance.devices,
+
         }
 
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,
+        channel_layer = channels.layers.get_channel_layer()
+
+        async_to_sync(channel_layer.group_send)(
+            room_group_name,
             {
                 'type': 'chat_message',
                 'text': message
