@@ -26,7 +26,7 @@
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             document.querySelector('#chat-log').value += (data.message + '\n');
-            console.log(typeof data.message);
+            console.log(data.message.job_id);
         };
 
         chatSocket.onclose = function(e) {
