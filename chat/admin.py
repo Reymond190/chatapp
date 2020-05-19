@@ -5,4 +5,3 @@ admin.site.register(plan)
 
 
 
-p
