@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -12,3 +13,4 @@ class plan(models.Model):
     total_price = models.FloatField(null=True)
     subscription_time = models.DurationField(null=True)
     yearly = models.BooleanField(default=False)
+    owner = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
