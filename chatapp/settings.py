@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'chatapp.urls'
 
 
@@ -72,10 +73,14 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'chatapp.wsgi.application'
 
 
+
 ASGI_APPLICATION = 'chatapp.routing.application'
+
+
 
 CHANNEL_LAYERS = {
     'default': {
@@ -85,8 +90,13 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+
+
 
 DATABASES = {
     'default': {
@@ -133,3 +143,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+STATICFILES_DIRS =[
+    os.path.join(BASE_DIR, "static"),
+]
