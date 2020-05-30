@@ -40,8 +40,10 @@ class ChatConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
         print(text_data)
+        print(self.scope["user"])
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+
 
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
@@ -75,7 +77,6 @@ class ChatConsumer(WebsocketConsumer):
             'title': instance.plan_id,
             'status': instance.users,
             'modified': instance.devices,
-
         }
 
         channel_layer = channels.layers.get_channel_layer()
